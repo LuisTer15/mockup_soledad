@@ -1,10 +1,31 @@
+require 'twilio-ruby'
+
 class DemosController < ApplicationController
   before_action :set_demo, only: [:show, :edit, :update, :destroy]
 
-  # GET /demos
-  # GET /demos.json
+  def initialize()
+    account_sid = "AC86351090728f9e40a5f052248ba25ea3"
+    auth_token = "94e08ce3a1c97e57207387a4df22fc38"
+
+    @client = Twilio::REST::Client.new account_sid, auth_token
+
+    Twilio.configure do |config|
+      config.account_sid = account_sid
+      config.auth_token = auth_token
+    end
+  end
+
   def index
     @demos = Demo.all
+  end
+
+  def home
+  end
+
+  def login
+  end
+
+  def success
   end
 
   # GET /demos/1
@@ -28,11 +49,16 @@ class DemosController < ApplicationController
 
     respond_to do |format|
       if @demo.save
-        format.html { redirect_to @demo, notice: 'Demo was successfully created.' }
-        format.json { render :show, status: :created, location: @demo }
+        
+        @client = Twilio::REST::Client.new
+        @client.api.account.messages.create(
+            from: "+16203495181", 
+            to: {"+573012078436", "+573106322447"},
+            body: "#{@demo.description}")
+
+        format.html { redirect_to success_path }
       else
         format.html { render :new }
-        format.json { render json: @demo.errors, status: :unprocessable_entity }
       end
     end
   end
@@ -62,12 +88,6 @@ class DemosController < ApplicationController
   end
 
   private
-    # Use callbacks to share common setup or constraints between actions.
-    def set_demo
-      @demo = Demo.find(params[:id])
-    end
-
-    # Never trust parameters from the scary internet, only allow the white list through.
     def demo_params
       params.require(:demo).permit(:description)
     end
