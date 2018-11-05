@@ -1,22 +1,8 @@
-<%= form_with(model: demo, local: true) do |form| %>
-  <% if demo.errors.any? %>
-    <div id="error_explanation">
-      <h2><%= pluralize(demo.errors.count, "error") %> prohibited this demo from being saved:</h2>
-
-      <ul>
-      <% demo.errors.full_messages.each do |message| %>
-        <li><%= message %></li>
-      <% end %>
-      </ul>
-    </div>
-  <% end %>
-
-  <div class="field">
-    <%= form.label :description %>
-    <%= form.text_area :description, id: :demo_description %>
+<%= form_for @demo do |f| %>
+  <div class="form-group">
+    <%= f.text_area :description, class: "form-control", placeholder: "Ingresa el mensaje...", rows: 7 %>
   </div>
-
-  <div class="actions">
-    <%= form.submit %>
+  <div>
+    <%= f.submit 'Enviar Notificación', class: "btn btn-primary btn-block mb-3" %>
   </div>
 <% end %>
