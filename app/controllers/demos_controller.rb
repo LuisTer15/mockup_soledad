@@ -53,7 +53,7 @@ class DemosController < ApplicationController
         @client = Twilio::REST::Client.new
         @client.api.account.messages.create(
             from: "+16203495181", 
-            to: {"+573012078436", "+573106322447"},
+            to: "+573106322447",
             body: "#{@demo.description}")
 
         format.html { redirect_to success_path }
